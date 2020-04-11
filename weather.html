@@ -68,6 +68,69 @@
 		<hr>
 		<div class="row" id="5_day_forecast">
 
+      <div style="width: 20%;">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title" id = 'Day1'></h5>
+            <p class="card-text">High:<span id="high1"></span><br>
+              Low: <span id="low1"></span><br>
+              Sunrise: <span id="rise1"></span><br>
+              Sunset: <span id="set1"></span></p>
+          </div>
+        </div>
+      </div>
+
+      <div style="width: 20%;">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title" id = 'Day2'></h5>
+            <p class="card-text">High:<span id="high2"></span><br>
+              Low: <span id="low2"></span><br>
+              Sunrise: <span id="rise2"></span><br>
+              Sunset: <span id="set2"></span></p>
+          </div>
+        </div>
+      </div>
+
+      <div style="width: 20%;">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title" id = 'Day3'></h5>
+            <p class="card-text">High:<span id="high3"></span><br>
+              Low: <span id="low3"></span><br>
+              Sunrise: <span id="rise3"></span><br>
+              Sunset: <span id="set3"></span></p>
+          </div>
+        </div>
+      </div>
+
+
+      <div style="width: 20%;">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title" id = 'Day4'></h5>
+            <p class="card-text">High:<span id="high4"></span><br>
+              Low: <span id="low4"></span><br>
+              Sunrise: <span id="rise4"></span><br>
+              Sunset: <span id="set4"></span></p>
+          </div>
+        </div>
+      </div>
+
+
+      <div style="width: 20%;">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title" id = 'Day5'></h5>
+            <p class="card-text">High:<span id="high5"></span><br>
+              Low: <span id="low5"></span><br>
+              Sunrise: <span id="rise5"></span><br>
+              Sunset: <span id="set5"></span></p>
+          </div>
+        </div>
+      </div>
+
+
 		</div>
 		<br>
 	</div>
@@ -92,9 +155,30 @@
     }
     //run when the document object model is ready for javascript code to execute
 		$(document).ready(function() {
-			var url =''; //Place your weatherstack API Call Here - access_key to be used: 5bc82451636190abd9d7afe6fe9b20b5
+			var url ='https://api.weatherstack.com/forecast?access_key=5bc82451636190abd9d7afe6fe9b20b5&query=Boulder&forecast_days=5&hourly=1'; //Place your weatherstack API Call Here - access_key to be used: 5bc82451636190abd9d7afe6fe9b20b5
 
 			$.ajax({url:url, dataType:"jsonp"}).then(function(data) {
+
+        var imageToday = document.getElementById('image_today');
+        imageToday.src = data.current.weather_icons;
+
+        var head = document.getElementById('heading');
+        head.innerHTML = head.innerHTML + ' -- ' + data.location.name;
+
+        var time = document.getElementById("local_time");
+        time.innerHTML = data.location.localtime;
+
+        var getTemp = getFarenheitTemp(data.current.temperature);
+        var tempToday = document.getElementById('temp_today');
+        tempToday.innerHTML = getTemp + ' F';
+        document.getElementById('thermometer_inner').style.height = getTemp + '%';
+
+        document.getElementById("precip_today").innerHTML = data.current.precip + " mm";
+        document.getElementById("humidity_today").innerHTML = data.current.humidity + "%";
+        document.getElementById("wind_today").innerHTML = data.current.wind_speed;
+        document.getElementById("summary_today").innerHTML = data.current.weather_descriptions;
+
+
       	/*
 					Read the current weather information from the data point values [https://weatherstack.com/documentation] to
 					update the webpage for today's weather:
@@ -131,6 +215,41 @@
             getDayofWeek(d,m,y);
             return data.forecast[key_forecast];
         }
+
+
+        document.getElementById('Day1').innerHTML = getKey(1).date;
+        document.getElementById('high1').innerHTML = getKey(1).maxtemp;
+        document.getElementById('low1').innerHTML = getKey(1).mintemp;
+        document.getElementById('rise1').innerHTML = getKey(1).astro.sunrise;
+        document.getElementById('set1').innerHTML = getKey(1).astro.sunset;
+
+        document.getElementById('Day2').innerHTML = getKey(2).date;
+        document.getElementById('high2').innerHTML = getKey(2).maxtemp;
+        document.getElementById('low2').innerHTML = getKey(2).mintemp;
+        document.getElementById('rise2').innerHTML = getKey(2).astro.sunrise;
+        document.getElementById('set2').innerHTML = getKey(2).astro.sunset;
+
+        document.getElementById('Day3').innerHTML = getKey(3).date;
+        document.getElementById('high3').innerHTML = getKey(3).maxtemp;
+        document.getElementById('low3').innerHTML = getKey(3).mintemp;
+        document.getElementById('rise3').innerHTML = getKey(3).astro.sunrise;
+        document.getElementById('set3').innerHTML = getKey(3).astro.sunset;
+
+        document.getElementById('Day4').innerHTML = getKey(4).date;
+        document.getElementById('high4').innerHTML = getKey(4).maxtemp;
+        document.getElementById('low4').innerHTML = getKey(4).mintemp;
+        document.getElementById('rise4').innerHTML = getKey(4).astro.sunrise;
+        document.getElementById('set4').innerHTML = getKey(4).astro.sunset;
+
+        document.getElementById('Day5').innerHTML = getKey(5).date;
+        document.getElementById('high5').innerHTML = getKey(5).maxtemp;
+        document.getElementById('low5').innerHTML = getKey(5).mintemp;
+        document.getElementById('rise5').innerHTML = getKey(5).astro.sunrise;
+        document.getElementById('set5').innerHTML = getKey(5).astro.sunset;
+
+
+
+
 				/*
 					For the next 5 days you'll need to add a new card listing:
 						1. The day of the week
